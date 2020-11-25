@@ -1,0 +1,83 @@
+version: '3'
+services:
+  ms-web:
+    image: nginx:latest
+    container_name: nginx-web
+    restart: always
+    privileged: true
+    ports:
+      - "8080:80"
+    volumes:
+      - ./ms-web/dist:/usr/share/nginx/share 
+    networks:
+      - ar_network
+  management:
+    image: management:latest
+    volumes:
+      - ./Management-System:/code
+#      - /home/snail/Project/docker_data/logs:/data/logs
+#      - /home/snail/Project/docker_data/files:/data/files
+#      - /home/snail/Project/docker_data/config:/data/config
+      - E:/docker_data/logs:/data/logs
+      - E:/docker_data/files:/data/files
+      - E:/docker_data/config:/data/config
+    container_name: management
+    restart: always
+    privileged: true
+    ports:
+      - "8000:8000"
+    networks:
+      - ar_network
+  spider:
+    image: spider:latest
+    volumes:
+      - ./Video-Spider:/code
+#      - /home/snail/Project/docker_data/logs:/data/logs
+#      - /home/snail/Project/docker_data/files:/data/files
+#      - /home/snail/Project/docker_data/config:/data/config
+      - E:/docker_data/logs:/data/logs
+      - E:/docker_data/files:/data/files
+      - E:/docker_data/config:/data/config
+    container_name: spider
+    restart: always
+    privileged: true
+    ports:
+      - "8001:8000"
+    networks:
+      - ar_network
+  extractor:
+    image: extractor:latest
+    volumes:
+      - ./Audio-Extracting:/code
+#      - /home/snail/Project/docker_data/logs:/data/logs
+#      - /home/snail/Project/docker_data/files:/data/files
+#      - /home/snail/Project/docker_data/config:/data/config
+      - E:/docker_data/logs:/data/logs
+      - E:/docker_data/files:/data/files
+      - E:/docker_data/config:/data/config
+    container_name: extractor
+    restart: always
+    privileged: true
+    ports:
+      - "8002:8000"
+    networks:
+      - ar_network
+  dejavu:
+    image: recognition:latest
+    volumes:
+      - ./Audio-Recognition/dejavu:/code
+#      - /home/snail/Project/docker_data/logs:/data/logs
+#      - /home/snail/Project/docker_data/files:/data/files
+#      - /home/snail/Project/docker_data/config:/data/config
+      - E:/docker_data/logs:/data/logs
+      - E:/docker_data/files:/data/files
+      - E:/docker_data/config:/data/config
+    container_name: recognition
+    restart: always
+    privileged: true
+    ports:
+      - "8003:8000"
+    networks:
+      - ar_network
+networks:
+  ar_network:

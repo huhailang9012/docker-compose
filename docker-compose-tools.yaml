@@ -1,0 +1,40 @@
+version: '3'
+services:
+  minio:
+    image: minio/minio
+    volumes: 
+      - E:/Minio/data:/data
+    container_name: minio
+    restart: always
+    privileged: true
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    command: server /data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    privileged: true
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=audio_recognition
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+  nginx-web:
+    image: nginx
+    container_name: nginx-web
+    restart: always
+    privileged: true
+    ports:
+      - "8080:80"
+    volumes:
+      - ./dist:/usr/share/nginx/share
