@@ -18,6 +18,8 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+    networks:
+      - ar_network
   postgres:
     image: postgres
     container_name: postgres
@@ -29,12 +31,18 @@ services:
       - POSTGRES_DB=audio_recognition
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456
-  nginx-web:
+    networks:
+      - ar_network 
+  nginx:
     image: nginx
-    container_name: nginx-web
+    container_name: nginx
     restart: always
     privileged: true
     ports:
       - "8080:80"
     volumes:
       - ./dist:/usr/share/nginx/share
+    networks:
+      - ar_network
+networks:
+  ar_network:

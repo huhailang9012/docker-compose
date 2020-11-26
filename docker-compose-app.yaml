@@ -1,16 +1,5 @@
 version: '3'
 services:
-  ms-web:
-    image: nginx:latest
-    container_name: nginx-web
-    restart: always
-    privileged: true
-    ports:
-      - "8080:80"
-    volumes:
-      - ./ms-web/dist:/usr/share/nginx/share 
-    networks:
-      - ar_network
   management:
     image: management:latest
     volumes:
